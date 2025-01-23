@@ -1,0 +1,48 @@
+name: build_images
+
+on:
+  workflow_dispatch:
+  push:
+
+env:
+  REF_NAME: ${{github.ref_name}}
+
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout rome-faucet repository'
+        uses: actions/checkout@main
+        with:
+          repository: rome-labs/rome-faucet
+          # path: rome-faucet
+          token: ${{ secrets.GIT_ROLLUP_TOKEN }}
+          
+      - name: 'Login to Docker Hub'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: 'Check folder structure'
+        run: |
+          ls -l
+            
+      - name: 'Build rome-faucet image'
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          push: true
+          file: Dockerfile
+          tags: romelabs/rome-faucet:${{github.ref_name}}
+          labels: romelabs/rome-faucet:${{github.ref_name}}
+
+      - name: 'Set latest tag'
+        if: |
+          ( github.ref_name == 'main' )
+        run: |
+          docker pull romelabs/rome-faucet:${{github.ref_name}}
+          docker tag romelabs/rome-faucet:${{github.ref_name}} romelabs/rome-faucet:latest
+          docker push romelabs/rome-faucet:latest

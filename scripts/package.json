@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "@solana/spl-token": "^0.4.1",
+    "@solana/spl-token-swap": "^0.4.0",
+    "@uniswap/v3-core": "^1.0.1",
+    "ejs": "^3.1.10",
+    "express": "^4.18.3",
+    "jsonwebtoken": "^9.0.2",
+    "axios": "^1.5.0",
+    "web3": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.11.25",
+    "chai": "^5.1.0",
+    "mocha": "^10.3.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.2",
+    "@types/axios": "^0.14.0"
+  },
+  "scripts": {
+    "send-geth-tx": "ts-node ./send-geth-tx.ts",
+    "server": "ts-node ./server.ts"
+  }
+}
